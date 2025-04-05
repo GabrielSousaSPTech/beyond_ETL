@@ -1,16 +1,12 @@
 package bba.log;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.TimerTask;
-import java.util.concurrent.ThreadLocalRandom;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
 public class Main {
     public static void main(String[] args) {
 
-
-        var formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LogGenerator log = new LogGenerator();
+        Connection c = new Connection();
+        c.setActiveConnection(false);
 
         String[] acao = {
                 "INFO [API] Requisição recebida para rio-de-janeiro - Tempo de resposta: 120ms",
@@ -34,16 +30,14 @@ public class Main {
                 "INFO [Worker] E-mails de notificação enviados com sucesso para 1.200 usuários"
         };
 
-//        -TimerTask é o que encapsula o codigo que será executado no intervalo de tempo
-//        scheduleAtFixedRate é um método da classe Timer que executa o codigo em um intervalo fixo de tempo
-        new java.util.Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                var dataHoraAtual = LocalDateTime.now();
-                Integer indiceAcaoEscolhida = ThreadLocalRandom.current().nextInt(0, acao.length);
-                System.out.println(acao[indiceAcaoEscolhida] + " - " + formatador.format(dataHoraAtual));
-            }
-        }, 0, 5000);
+
+
+        if(c.getActiveConnection()){
+            System.out.println("Conexão com o banco de dados bem sucedida");
+            Connection.testConnection();
+        }else{
+            log.gerarLogAleatorio(acao);
+        }
 
 
     }
