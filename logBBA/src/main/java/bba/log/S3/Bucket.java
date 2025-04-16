@@ -1,4 +1,4 @@
-package school.sptech;
+package bba.log.S3;
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.ResponseInputStream;
@@ -12,12 +12,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BucketS3 {
+public class Bucket {
     private String bucketName;
     private Region bucketRegion;
     private S3Client client;
 
-    public BucketAWS(String bucketName, Region bucketRegion) {
+    public void BucketAWS(String bucketName, Region bucketRegion) {
         this.bucketName = bucketName;
         this.bucketRegion = bucketRegion;
         this.client = S3Client.builder()
@@ -26,16 +26,16 @@ public class BucketS3 {
                 .build();
     }
 
-      public List<String> getFile(String fileName){
-        if(fileName == null || fileName.isBlank()) throw new RuntimeException("fileName invalid");
+    public List<String> getFile(String fileName) {
+        if (fileName == null || fileName.isBlank()) throw new RuntimeException("fileName invalid");
 
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(bucketName)
                 .key(fileName)
                 .build();
 
-        try(ResponseInputStream<GetObjectResponse> s3Object = client.getObject(getObjectRequest);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(s3Object))){
+        try (ResponseInputStream<GetObjectResponse> s3Object = client.getObject(getObjectRequest);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(s3Object))) {
 
             String line;
             List<String> result = new ArrayList<>();
@@ -49,7 +49,7 @@ public class BucketS3 {
         }
     }
 
-    public void listAllFiles(){
+    public void listAllFiles() {
         ListObjectsV2Iterable response = client.listObjectsV2Paginator(ListObjectsV2Request.builder().bucket(bucketName).build());
 
 
@@ -60,3 +60,4 @@ public class BucketS3 {
         }
     }
 }
+
