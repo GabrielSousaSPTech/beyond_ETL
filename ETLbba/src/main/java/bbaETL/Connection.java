@@ -1,4 +1,4 @@
-package bba.log;
+package bbaETL;
 
 import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -9,9 +9,9 @@ import java.util.List;
 
 public class Connection {
 
-        private final DataSource dataSource;
+    private final DataSource dataSource;
 
-        private Boolean activeConnection;
+    private Boolean activeConnection;
 
     public Boolean getActiveConnection() {
         return activeConnection;
@@ -22,18 +22,18 @@ public class Connection {
     }
 
     public Connection() {
-            BasicDataSource basicDataSource = new BasicDataSource();
-            basicDataSource.setUrl("jdbc:mysql://54.210.153.246:3306/DbDesafioMySQLRemoto ");
-            basicDataSource.setUsername("root");
-            basicDataSource.setPassword("urubu100");
-            basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-            this.activeConnection = true;
-            this.dataSource = basicDataSource;
-        }
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setUrl("jdbc:mysql://54.210.153.246:3306/DbDesafioMySQLRemoto ");
+        basicDataSource.setUsername("root");
+        basicDataSource.setPassword("urubu100");
+        basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        this.activeConnection = true;
+        this.dataSource = basicDataSource;
+    }
 
-        public JdbcTemplate getConnection() {
-            return new JdbcTemplate(dataSource);
-        }
+    public JdbcTemplate getConnection() {
+        return new JdbcTemplate(dataSource);
+    }
 
     public static void testConnection() {
         try {
@@ -51,4 +51,5 @@ public class Connection {
 
 
 }
+
 

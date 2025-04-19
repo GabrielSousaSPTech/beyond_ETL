@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>bba.log</groupId>
-    <artifactId>logBBA</artifactId>
+    <groupId>bbaETL</groupId>
+    <artifactId>ETLbba</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -54,7 +54,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
-                    <finalName>BeyondLog</finalName>
+                    <finalName>BeyondETL</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -77,4 +77,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

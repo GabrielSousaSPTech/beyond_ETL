@@ -1,4 +1,4 @@
-package bba.log;
+package bbaETL;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -12,12 +12,12 @@ public class LogDao {
 
     public void insertLog(String log){
         if(!log.isBlank()){
-           try{
+            try{
                 String comandoSQL = "INSERT INTO Registro_Log(descricao) VALUES(?)";
                 jdbcTemplate.update(comandoSQL, log);
-           }catch(Exception e){
-               System.out.println("Erro ao inserir log: " + e.getMessage());
-           }
+            }catch(Exception e){
+                System.out.println("Erro ao inserir log: " + e.getMessage());
+            }
         }
     }
 }
