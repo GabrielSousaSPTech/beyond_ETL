@@ -7,8 +7,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.paginators.ListObjectsV2Iterable;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,16 +16,22 @@ public class BucketAWS {
     private Region bucketRegion;
     private S3Client client;
 
-    public void BucketAWS(String bucketName, Region bucketRegion) {
+
+
+    public BucketAWS(String bucketName) {
         this.bucketName = bucketName;
-        this.bucketRegion = bucketRegion;
+        this.bucketRegion = Region.US_EAST_1;
         this.client = S3Client.builder()
                 .region(bucketRegion)
                 .credentialsProvider(ProfileCredentialsProvider.create())
                 .build();
     }
 
-    public List<String> getFile(String fileName) {
+
+
+
+
+    public ResponseInputStream<GetObjectResponse> getFile(String fileName) {
         if (fileName == null || fileName.isBlank()) throw new RuntimeException("fileName invalid");
 
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
@@ -34,30 +39,62 @@ public class BucketAWS {
                 .key(fileName)
                 .build();
 
-        try (ResponseInputStream<GetObjectResponse> s3Object = client.getObject(getObjectRequest);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(s3Object))) {
-
-            String line;
-            List<String> result = new ArrayList<>();
-            while ((line = reader.readLine()) != null) {
-                result.add(line);
-            }
-            return result;
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        ResponseInputStream<GetObjectResponse> s3Object = client.getObject(getObjectRequest);
+             return s3Object;
     }
 
-    public void listAllFiles() {
-        ListObjectsV2Iterable response = client.listObjectsV2Paginator(ListObjectsV2Request.builder().bucket(bucketName).build());
+    public List<Arquivos> listAllFiles() {
+        ListObjectsV2Iterable response = client.listObjectsV2Paginator(
+                ListObjectsV2Request.builder()
+                        .bucket(bucketName)
+                        .prefix("naFila/")
+                        .build()
+        );
 
+        List<Arquivos>  listaDeArquivos = new ArrayList<>();
 
         for (ListObjectsV2Response page : response) {
             for (S3Object object : page.contents()) {
-                //TODO: Retornar uma lista de objetos da S3 e mudar de void para list<S3Object object>
+                GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(object.key())
+                        .build();
+
+                InputStream inputStream = client.getObject(getObjectRequest);
+                listaDeArquivos.add(new Arquivos(object.key(), inputStream));
             }
         }
+
+        return listaDeArquivos;
+    }
+
+    public void moveFileToProcessed(String fileName) {
+        if (fileName == null || fileName.isBlank()) {
+            throw new RuntimeException("fileName invalid");
+        }
+
+        // Define os nomes dos "diretórios"
+
+        String nomeArquivo = fileName.substring(fileName.lastIndexOf("/") + 1);
+        String destinationKey = "processado/" + nomeArquivo;
+
+        CopyObjectRequest copyObjectRequest = CopyObjectRequest.builder()
+                .sourceBucket(bucketName)
+                .sourceKey(fileName)
+                .destinationBucket(bucketName)
+                .destinationKey(destinationKey)
+                .build();
+
+
+        client.copyObject(copyObjectRequest);
+
+
+        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fileName)
+                .build();
+
+        client.deleteObject(deleteObjectRequest);
     }
 }
 
