@@ -21,12 +21,9 @@ public class Extract {
                 List<ChegadaTuristas> dadosExtraidos = new ArrayList<>();
                 for (Arquivos arquivoAtual : nomeArquivo) {
                     System.out.println("\nIniciando leitura do arquivo %s\n".formatted(nomeArquivo));
-                    Workbook workbook;
-                    if (arquivoAtual.getNome().endsWith("xlsx")) {
-                        workbook = new XSSFWorkbook(arquivoAtual.getInputStream());
-                    } else {
-                        workbook = new HSSFWorkbook(arquivoAtual.getInputStream());
-                    }
+
+                    Workbook workbook = new XSSFWorkbook(arquivoAtual.getInputStream());
+
 
                     Sheet planilha = workbook.getSheetAt(0);
 

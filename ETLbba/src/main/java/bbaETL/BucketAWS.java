@@ -55,13 +55,17 @@ public class BucketAWS {
 
         for (ListObjectsV2Response page : response) {
             for (S3Object object : page.contents()) {
-                GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(object.key())
-                        .build();
 
-                InputStream inputStream = client.getObject(getObjectRequest);
-                listaDeArquivos.add(new Arquivos(object.key(), inputStream));
+                if(object.key().endsWith("xlsx")){
+
+                    GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                            .bucket(bucketName)
+                            .key(object.key())
+                            .build();
+                    System.out.println(object.key());
+                    InputStream inputStream = client.getObject(getObjectRequest);
+                    listaDeArquivos.add(new Arquivos(object.key(), inputStream));
+                }
             }
         }
 
