@@ -27,10 +27,6 @@ public class BucketAWS {
                 .build();
     }
 
-
-
-
-
     public ResponseInputStream<GetObjectResponse> getFile(String fileName) {
         if (fileName == null || fileName.isBlank()) throw new RuntimeException("fileName invalid");
 

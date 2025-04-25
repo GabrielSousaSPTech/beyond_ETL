@@ -4,13 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6706f84b-e1db-4f6f-8dc4-1a5595dfea15" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/ETLbba/.gitignore" beforeDir="false" />
+    <list default="true" id="6706f84b-e1db-4f6f-8dc4-1a5595dfea15" name="Changes" comment="ADD - criação de Workflow e .env">
+      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ETLbba/src/main/java/bbaETL/Workflow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ETLbba/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ETLbba/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ETLbba/src/main/java/bbaETL/BucketAWS.java" beforeDir="false" afterPath="$PROJECT_DIR$/ETLbba/src/main/java/bbaETL/BucketAWS.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ETLbba/src/main/java/bbaETL/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/ETLbba/src/main/java/bbaETL/Connection.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -37,9 +51,14 @@
     "git-widget-placeholder": "dev-workflow",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/gabri/Desktop/anotacao/beyond_ETL"
+    "last_opened_file_path": "C:/Users/filli/Documents/repositorios/beyond_ETL"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\filli\Documents\repositorios\beyond_ETL" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="ETLbba" />
@@ -62,6 +81,23 @@
       <option name="presentableId" value="Default" />
       <updated>1745076894438</updated>
     </task>
+    <task id="LOCAL-00001" summary="Criação de Branch">
+      <option name="closed" value="true" />
+      <created>1745586639466</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1745586639466</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Criação de Branch" />
+    <MESSAGE value="ADD - criação de Workflow e .env" />
+    <option name="LAST_COMMIT_MESSAGE" value="ADD - criação de Workflow e .env" />
   </component>
 </project>

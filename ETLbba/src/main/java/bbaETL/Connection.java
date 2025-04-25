@@ -31,6 +31,16 @@ public class Connection {
         this.dataSource = basicDataSource;
     }
 
+    public Connection(String dbHost, String dbPort, String dbDatabase, String dbUser, String dbPassword) {
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setUrl("jdbc:mysql://"+dbHost+":"+dbPort+"/"+dbDatabase);
+        basicDataSource.setUsername(dbUser);
+        basicDataSource.setPassword(dbPassword);
+        basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        this.activeConnection = true;
+        this.dataSource = basicDataSource;
+    }
+
     public JdbcTemplate getConnection() {
         return new JdbcTemplate(dataSource);
     }
