@@ -23,7 +23,7 @@ public class Connection {
 
     public Connection() {
         BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:mysql://54.210.153.246:3306/DbDesafioMySQLRemoto ");
+        basicDataSource.setUrl("jdbc:mysql://44.202.27.201:3306/Beyond_DB ");
         basicDataSource.setUsername("root");
         basicDataSource.setPassword("urubu100");
         basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");

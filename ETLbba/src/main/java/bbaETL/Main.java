@@ -5,7 +5,7 @@ public class Main {
 
         LogGenerator log = new LogGenerator();
         Connection c = new Connection();
-        c.setActiveConnection(false);
+        c.setActiveConnection(true);
 
 //        String[] acao = {
 //                "INFO [API] Requisição recebida para rio-de-janeiro - Tempo de resposta: 120ms",
