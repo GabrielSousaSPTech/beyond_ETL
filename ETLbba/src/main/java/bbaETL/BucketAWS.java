@@ -16,7 +16,7 @@ public class BucketAWS {
     private String bucketName;
     private Region bucketRegion;
     private S3Client client;
-
+    LogDao log = new LogDao(new Connection().getConnection());
 
 
     public BucketAWS(String bucketName) {
@@ -41,7 +41,7 @@ public class BucketAWS {
                 .build();
 
         ResponseInputStream<GetObjectResponse> s3Object = client.getObject(getObjectRequest);
-             return s3Object;
+        return s3Object;
     }
 
     public List<Arquivos> listAllFiles() {
@@ -55,11 +55,14 @@ public class BucketAWS {
         List<Arquivos>  listaDeArquivos = new ArrayList<>();
 
         for (ListObjectsV2Response page : response) {
+            log.insertLog("INFO", "Iniciando listagem de arquivos do bucket");
             for (S3Object object : page.contents()) {
 
                 if(object.key().endsWith("xlsx")){
                     String nomeArquivo = object.key().substring(object.key().lastIndexOf("/") + 1);
-                        new LogGenerator().processLog("INFO", "Leitura do arquivo: "+ nomeArquivo+ " Iniciada");
+
+                    log.insertLog("INFO", "Arquivo encontrado: "+nomeArquivo);
+
                     GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                             .bucket(bucketName)
                             .key(object.key())
