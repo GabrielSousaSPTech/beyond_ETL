@@ -11,23 +11,13 @@ public class Connection {
 
     private final DataSource dataSource;
 
-    private Boolean activeConnection;
-
-    public Boolean getActiveConnection() {
-        return activeConnection;
-    }
-
-    public void setActiveConnection(Boolean activeConnection) {
-        this.activeConnection = activeConnection;
-    }
-
     public Connection() {
         BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:mysql://54.210.153.246:3306/DbDesafioMySQLRemoto ");
+        basicDataSource.setUrl("jdbc:mysql://localhost:3306/Beyond_DB");
         basicDataSource.setUsername("root");
-        basicDataSource.setPassword("urubu100");
+        basicDataSource.setPassword("393741Gs*");
         basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        this.activeConnection = true;
+
         this.dataSource = basicDataSource;
     }
 

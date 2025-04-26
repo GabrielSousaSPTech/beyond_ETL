@@ -1,5 +1,6 @@
 package bbaETL;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.regions.Region;
@@ -15,7 +16,7 @@ public class BucketAWS {
     private String bucketName;
     private Region bucketRegion;
     private S3Client client;
-
+    LogDao log = new LogDao(new Connection().getConnection());
 
 
     public BucketAWS(String bucketName) {
@@ -40,7 +41,7 @@ public class BucketAWS {
                 .build();
 
         ResponseInputStream<GetObjectResponse> s3Object = client.getObject(getObjectRequest);
-             return s3Object;
+        return s3Object;
     }
 
     public List<Arquivos> listAllFiles() {
@@ -54,14 +55,22 @@ public class BucketAWS {
         List<Arquivos>  listaDeArquivos = new ArrayList<>();
 
         for (ListObjectsV2Response page : response) {
+            log.insertLog("INFO", "Iniciando listagem de arquivos do bucket");
             for (S3Object object : page.contents()) {
-                GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(object.key())
-                        .build();
 
-                InputStream inputStream = client.getObject(getObjectRequest);
-                listaDeArquivos.add(new Arquivos(object.key(), inputStream));
+                if(object.key().endsWith("xlsx")){
+                    String nomeArquivo = object.key().substring(object.key().lastIndexOf("/") + 1);
+
+                    log.insertLog("INFO", "Arquivo encontrado: "+nomeArquivo);
+
+                    GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                            .bucket(bucketName)
+                            .key(object.key())
+                            .build();
+                    System.out.println(object.key());
+                    InputStream inputStream = client.getObject(getObjectRequest);
+                    listaDeArquivos.add(new Arquivos(object.key(), inputStream));
+                }
             }
         }
 
