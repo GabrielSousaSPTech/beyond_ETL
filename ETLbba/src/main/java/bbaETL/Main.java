@@ -6,6 +6,7 @@ public class Main {
 
         BucketAWS b = new BucketAWS("bucketgabrielsousasptech");
         Extract e = new Extract();
-        System.out.println( e.extrairChegada(b.listAllFiles()));
+        Transform t = new Transform();
+        System.out.println( t.tratarDados(e.extrairChegada(b.listAllFiles())));
     }
 }
