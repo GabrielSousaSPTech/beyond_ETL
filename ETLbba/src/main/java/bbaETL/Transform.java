@@ -64,6 +64,7 @@ public class Transform {
     }
 
     public List<DadoTratado> tratarDados(List<ChegadaTuristas> dadosOriginais){
+        log.insertLog("INFO", "Iniciando o tratamento e unificação dos dados");
 
         List<DadoTratado> dadosTratados = new ArrayList<>();
         List<ChegadaTuristas> dadoUnificado = unificarChegada(dadosOriginais);
@@ -74,6 +75,7 @@ public class Transform {
 
             dadosTratados.add(d);
         }
+        log.insertLog("INFO", "Tratamento e unificação dos dados finalizada");
         return dadosTratados;
     }
 

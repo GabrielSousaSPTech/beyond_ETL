@@ -3,7 +3,6 @@ package bbaETL;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -54,7 +53,7 @@ public class Extract {
 
                         dadosExtraidos.add(dadoTurista);
                     } else {
-                        log.insertLog("ERRO", "Arquivo inválido para leitura: " + arquivoAtual.getNome());
+                        log.insertLog("ERROR", "Arquivo inválido para leitura: " + arquivoAtual.getNome());
                     }
                 }
 

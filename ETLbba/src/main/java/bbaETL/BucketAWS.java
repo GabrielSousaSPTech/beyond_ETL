@@ -67,7 +67,7 @@ public class BucketAWS {
                             .bucket(bucketName)
                             .key(object.key())
                             .build();
-                    System.out.println(object.key());
+
                     InputStream inputStream = client.getObject(getObjectRequest);
                     listaDeArquivos.add(new Arquivos(object.key(), inputStream));
                 }
