@@ -13,7 +13,7 @@ public class Connection {
 
     public Connection() {
         BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:mysql://localhost:3306/Beyond_DB");
+        basicDataSource.setUrl("jdbc:mysql://localhost:3306/beyond_db");
         basicDataSource.setUsername("root");
         basicDataSource.setPassword("393741Gs*");
         basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");

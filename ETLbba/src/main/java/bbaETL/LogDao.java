@@ -12,7 +12,7 @@ public class LogDao {
     public void insertLog(String tipo, String log){
         if(!log.isBlank()){
             try{
-                String comandoSQL = "INSERT INTO Registro_Log(tipoLog, descricaoLog) VALUES(?,?)";
+                String comandoSQL = "INSERT INTO TB_ETL_LOG(TIPO_LOG, DESCRICAO) VALUES(?,?)";
                 jdbcTemplate.update(comandoSQL, tipo, log);
             }catch(Exception e){
                 System.out.println("Erro ao inserir log: " + e.getMessage());
