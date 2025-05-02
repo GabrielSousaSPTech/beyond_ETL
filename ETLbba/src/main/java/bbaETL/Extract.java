@@ -54,7 +54,7 @@ public class Extract {
 
                         dadosExtraidos.add(dadoTurista);
                     } else {
-                        log.insertLog("INFO", "Arquivo inválido para ler: " + arquivoAtual.getNome());
+                        log.insertLog("ERRO", "Arquivo inválido para leitura: " + arquivoAtual.getNome());
                     }
                 }
 
@@ -69,7 +69,7 @@ public class Extract {
             return dadosExtraidos;
 
         } catch (IOException e) {
-            log.insertLog("ERROR", "Erro ao extrair dados dos arquivos: " + e.getMessage());
+            log.insertLog("ERRO", "Erro ao extrair dados dos arquivos: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }

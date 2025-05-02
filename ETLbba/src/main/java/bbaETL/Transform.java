@@ -5,35 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Transform {
-
+    LogDao log = new LogDao(new Connection().getConnection());
     public static Integer formatarMes(String mes){
-        switch (mes){
-            case "Janeiro":
-                return 1;
-            case "Fevereiro":
-                return 2;
-            case "Março":
-                return 3;
-            case "Abril":
-                return 4;
-            case "Maio":
-                return 5;
-            case "Junho":
-                return 6;
-            case "Julho":
-                return 7;
-            case "Agosto":
-                return 8;
-            case "Setembro":
-                return 9;
-            case "Outubro":
-                return 10;
-            case "Novembro":
-                return 11;
-            case "Dezembro":
-                return 12;
-        }
-        return 0;
+        return switch (mes) {
+            case "Janeiro" -> 1;
+            case "Fevereiro" -> 2;
+            case "Março" -> 3;
+            case "Abril" -> 4;
+            case "Maio" -> 5;
+            case "Junho" -> 6;
+            case "Julho" -> 7;
+            case "Agosto" -> 8;
+            case "Setembro" -> 9;
+            case "Outubro" -> 10;
+            case "Novembro" -> 11;
+            case "Dezembro" -> 12;
+            default -> 0;
+        };
     }
 
     public List<ChegadaTuristas> unificarChegada(List<ChegadaTuristas> dadoOriginal){
@@ -55,6 +43,9 @@ public class Transform {
                             linhaAtual.getMes().equals(linhaAtualUnificada.getMes()) &&
                             linhaAtual.getCodMes().equals(linhaAtualUnificada.getCodMes())){
                         Integer chegadaUnificada = linhaAtualUnificada.getChegadas() + linhaAtual.getChegadas();
+                        log.insertLog("DEBUG", "Registro duplicado encontrado. Unindo chegadas de " +
+                                linhaAtualUnificada.getChegadas() + " com " + linhaAtual.getChegadas() + ". Total: " + chegadaUnificada);
+
                         ChegadaTuristas dadoNovo = linhaAtualUnificada;
                         dadoNovo.setChegadas(chegadaUnificada);
 
