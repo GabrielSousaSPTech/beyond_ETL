@@ -7,6 +7,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.paginators.ListObjectsV2Iterable;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +92,25 @@ public class BucketAWS {
                 .build();
 
         client.deleteObject(deleteObjectRequest);
+    }
+
+    public void putObject(String objectKey, String filePath) {
+        try {
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(objectKey)
+                    .build();
+
+            client.putObject(putObjectRequest, new File(filePath).toPath());
+
+            System.out.println("Arquivo " + filePath + " enviado para " + bucketName + " com o nome " + objectKey);
+
+        } catch (S3Exception e) {
+            System.err.println(e.awsErrorDetails().errorMessage());
+            System.exit(1);
+        } finally {
+            client.close();
+        }
     }
 }
 

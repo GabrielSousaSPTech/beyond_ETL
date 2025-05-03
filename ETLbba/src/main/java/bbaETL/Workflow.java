@@ -2,18 +2,14 @@ package bbaETL;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
+import java.io.FileNotFoundException;
+
 public class Workflow {
+    public static void main(String[] args) throws FileNotFoundException {
+        //Dotenv dotenv = Dotenv.configure().directory("C:caminhoAtéAPastaDoEnv").load();
+        //dotenv.get("NOME_DA_VARIAVEL");
 
-    public static void main(String[] args) {
-        Dotenv dotenv = Dotenv.load(); // carrega o .env
-
-        // pega os valores do .env
-        String dbHost = dotenv.get("DB_HOST");
-        String dbPort = dotenv.get("DB_PORT");
-        String dbDatabase = dotenv.get("DB_DATABASE");
-        String dbUser = dotenv.get("DB_USER");
-        String dbPassword = dotenv.get("DB_PASSWORD");
-
-        String buName = dotenv.get("BU_NAME");
+        BucketAWS bucketAWS = new BucketAWS("bu-beyond-etl");
+        ConvertExcel.convertFileToXLSX("ETLbba/csvFiles", bucketAWS, "/out/");
     }
 }
