@@ -3,7 +3,6 @@ package bbaETL;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -38,23 +37,24 @@ public class Extract {
                     }
 
                     if (arquivoAtual.getNome().endsWith("xlsx")) {
-                        ChegadaTuristas dadoTurista = new ChegadaTuristas();
-                        dadoTurista.setContinente(linha.getCell(0).getStringCellValue());
-                        dadoTurista.setCodContinente((int) linha.getCell(1).getNumericCellValue());
-                        dadoTurista.setPais(linha.getCell(2).getStringCellValue());
-                        dadoTurista.setCodPais((int) linha.getCell(3).getNumericCellValue());
-                        dadoTurista.setUf(linha.getCell(4).getStringCellValue());
-                        dadoTurista.setCodUf((int) linha.getCell(5).getNumericCellValue());
-                        dadoTurista.setVia(linha.getCell(6).getStringCellValue());
-                        dadoTurista.setCodVia((int) linha.getCell(7).getNumericCellValue());
-                        dadoTurista.setAno((int) linha.getCell(8).getNumericCellValue());
-                        dadoTurista.setMes(linha.getCell(9).getStringCellValue());
-                        dadoTurista.setCodMes((int) linha.getCell(10).getNumericCellValue());
-                        dadoTurista.setChegadas((int) linha.getCell(11).getNumericCellValue());
-
-                        dadosExtraidos.add(dadoTurista);
+                        if((int) linha.getCell(11).getNumericCellValue() != 0){
+                            ChegadaTuristas dadoTurista = new ChegadaTuristas();
+                            dadoTurista.setContinente(linha.getCell(0).getStringCellValue());
+                            dadoTurista.setCodContinente((int) linha.getCell(1).getNumericCellValue());
+                            dadoTurista.setPais(linha.getCell(2).getStringCellValue());
+                            dadoTurista.setCodPais((int) linha.getCell(3).getNumericCellValue());
+                            dadoTurista.setUf(linha.getCell(4).getStringCellValue());
+                            dadoTurista.setCodUf((int) linha.getCell(5).getNumericCellValue());
+                            dadoTurista.setVia(linha.getCell(6).getStringCellValue());
+                            dadoTurista.setCodVia((int) linha.getCell(7).getNumericCellValue());
+                            dadoTurista.setAno((int) linha.getCell(8).getNumericCellValue());
+                            dadoTurista.setMes(linha.getCell(9).getStringCellValue());
+                            dadoTurista.setCodMes((int) linha.getCell(10).getNumericCellValue());
+                            dadoTurista.setChegadas((int) linha.getCell(11).getNumericCellValue());
+                            dadosExtraidos.add(dadoTurista);
+                        }
                     } else {
-                        log.insertLog("ERRO", "Arquivo inválido para leitura: " + arquivoAtual.getNome());
+                        log.insertLog("ERROR", "Arquivo inválido para leitura: " + arquivoAtual.getNome());
                     }
                 }
 
