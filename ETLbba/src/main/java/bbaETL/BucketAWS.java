@@ -1,6 +1,7 @@
 package bbaETL;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.regions.Region;
@@ -24,7 +25,7 @@ public class BucketAWS {
         this.bucketRegion = Region.US_EAST_1;
         this.client = S3Client.builder()
                 .region(bucketRegion)
-                .credentialsProvider(ProfileCredentialsProvider.create())
+                .credentialsProvider(DefaultCredentialsProvider.create())
                 .build();
         log = new LogDao(env);
     }
