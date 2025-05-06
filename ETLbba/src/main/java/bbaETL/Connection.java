@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -11,23 +12,23 @@ public class Connection {
 
     private final DataSource dataSource;
 
-    private Boolean activeConnection;
-
-    public Boolean getActiveConnection() {
-        return activeConnection;
-    }
-
-    public void setActiveConnection(Boolean activeConnection) {
-        this.activeConnection = activeConnection;
-    }
-
     public Connection() {
         BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:mysql://54.210.153.246:3306/DbDesafioMySQLRemoto ");
+        basicDataSource.setUrl("jdbc:mysql://localhost:3306/beyond_db");
         basicDataSource.setUsername("root");
-        basicDataSource.setPassword("urubu100");
+        basicDataSource.setPassword("393741Gs*");
         basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        this.activeConnection = true;
+
+        this.dataSource = basicDataSource;
+    }
+
+    public Connection(Env hashMap) {
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setUrl("jdbc:mysql://"+hashMap.BD_HOST+":"+hashMap.BD_PORT+"/"+hashMap.BD_DATABASE);
+        basicDataSource.setUsername(hashMap.BD_USER);
+        basicDataSource.setPassword(hashMap.BD_PASSWORD);
+        basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+
         this.dataSource = basicDataSource;
     }
 

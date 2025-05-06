@@ -1,46 +1,50 @@
 package bbaETL;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import software.amazon.awssdk.services.s3.model.S3Object;
+
 
 public class Extract {
 
+
+    private Env env;
+    private LogDao log;
+    public Extract(Env env) {
+        this.env = env;
+        log = new LogDao(env);
+    }
+
     public List<ChegadaTuristas> extrairChegada(List<Arquivos> nomeArquivo) {
-            try {
-                List<ChegadaTuristas> dadosExtraidos = new ArrayList<>();
-                for (Arquivos arquivoAtual : nomeArquivo) {
-                    System.out.println("\nIniciando leitura do arquivo %s\n".formatted(nomeArquivo));
 
-                    Workbook workbook = new XSSFWorkbook(arquivoAtual.getInputStream());
+        try {
+            List<ChegadaTuristas> dadosExtraidos = new ArrayList<>();
+            for (Arquivos arquivoAtual : nomeArquivo) {
 
+                log.insertLog("INFO", "Iniciando leitura do arquivo: " + arquivoAtual.getNome());
+                Workbook workbook;
 
-                    Sheet planilha = workbook.getSheetAt(0);
+                workbook = new XSSFWorkbook(arquivoAtual.getInputStream());
 
+                Sheet planilha = workbook.getSheetAt(0);
 
-                    for (Row linha : planilha) {
+                for (Row linha : planilha) {
 
-                        if (linha.getRowNum() == 0) {
-                            System.out.println("\nLendo Cabeçalho");
+                    if (linha.getRowNum() == 0) {
 
-                            for (int i = 0; i < linha.getLastCellNum(); i++) {
-                                String coluna = linha.getCell(i) != null ? linha.getCell(i).getStringCellValue() : "(vazio)";
-                                System.out.println("Coluna" + i + ": " + coluna);
-                            }
-                            continue;
+                        for (int i = 0; i < linha.getLastCellNum(); i++) {
+                            String coluna = linha.getCell(i) != null ? linha.getCell(i).getStringCellValue() : "(vazio)";
 
                         }
-                        if (arquivoAtual.getNome().endsWith("xlsx")) {
+                        continue;
+                    }
+
+                    if (arquivoAtual.getNome().endsWith("xlsx")) {
+                        if((int) linha.getCell(11).getNumericCellValue() != 0){
                             ChegadaTuristas dadoTurista = new ChegadaTuristas();
                             dadoTurista.setContinente(linha.getCell(0).getStringCellValue());
                             dadoTurista.setCodContinente((int) linha.getCell(1).getNumericCellValue());
@@ -54,28 +58,27 @@ public class Extract {
                             dadoTurista.setMes(linha.getCell(9).getStringCellValue());
                             dadoTurista.setCodMes((int) linha.getCell(10).getNumericCellValue());
                             dadoTurista.setChegadas((int) linha.getCell(11).getNumericCellValue());
-
                             dadosExtraidos.add(dadoTurista);
-                        } else {
-                            System.out.println("Nenhum arquivo para ler");
                         }
+                    } else {
+                        log.insertLog("ERROR", "Arquivo inválido para leitura: " + arquivoAtual.getNome());
                     }
-
-                    workbook.close();
-
-                    System.out.println("\nLeitura do arquivo: "+ arquivoAtual.getNome() + " finalizda\n");
-
-                    BucketAWS b = new BucketAWS("bucketgabrielsousasptech");
-                    b.moveFileToProcessed(arquivoAtual.getNome());
-                    System.out.println(arquivoAtual.getNome());
                 }
-                return dadosExtraidos;
 
-            } catch (IOException e) {
+                workbook.close();
 
-                throw new RuntimeException(e);
+                log.insertLog("INFO", "Leitura do arquivo: " + arquivoAtual.getNome() + " finalizada");
+
+                BucketAWS b = new BucketAWS(env);
+                b.moveFileToProcessed(arquivoAtual.getNome());
+                log.insertLog("INFO", "Arquivo movido para processados: " + arquivoAtual.getNome());
             }
+            return dadosExtraidos;
 
-
+        } catch (IOException e) {
+            log.insertLog("ERRO", "Erro ao extrair dados dos arquivos: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
+
 }
