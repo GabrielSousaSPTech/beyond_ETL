@@ -8,8 +8,8 @@ import java.time.format.DateTimeFormatter;
 public class LogDao {
 
     private final JdbcTemplate jdbcTemplate;
-    public LogDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public LogDao(Env env) {
+        this.jdbcTemplate = new Connection(env).getConnection();
     }
     String boldOn = "\033[1m";
     String boldOff = "\033[0m";

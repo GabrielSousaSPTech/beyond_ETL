@@ -5,7 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Transform {
-    LogDao log = new LogDao(new Connection().getConnection());
+
+
+    private LogDao log;
+    public Transform(Env env) {
+        log = new LogDao(env);
+    }
+
     public static Integer formatarMes(String mes){
         return switch (mes) {
             case "Janeiro" -> 1;

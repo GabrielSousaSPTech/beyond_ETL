@@ -11,6 +11,7 @@ public class Env {
     public final String BUCKET_NAME;
     public final HashMap<String,String> hashMapAllData;
 
+
     private Env(HashMap<String, String> envs) {
         this.BD_HOST = envs.get("BD_HOST");
         this.BD_DATABASE = envs.get("BD_DATABASE");
@@ -20,6 +21,8 @@ public class Env {
         this.BUCKET_NAME = envs.get("BUCKET_NAME");
         this.hashMapAllData = envs;
     }
+
+
 
     public static Env createEnv(){
         System.out.println("Insira os valores de env");
@@ -56,5 +59,19 @@ public class Env {
             }
         }
         return inputValue;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Env{" +
+                "BD_HOST='" + BD_HOST + '\'' +
+                ", BD_DATABASE='" + BD_DATABASE + '\'' +
+                ", BD_PORT='" + BD_PORT + '\'' +
+                ", BD_USER='" + BD_USER + '\'' +
+                ", BD_PASSWORD='" + BD_PASSWORD + '\'' +
+                ", BUCKET_NAME='" + BUCKET_NAME + '\'' +
+                ", hashMapAllData=" + hashMapAllData +
+                '}';
     }
 }

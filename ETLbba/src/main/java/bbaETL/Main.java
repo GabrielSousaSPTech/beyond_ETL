@@ -7,12 +7,11 @@ public class Main {
     public static void main(String[] args) {
         Env env = Env.createEnv();
 
-        BucketAWS b = new BucketAWS(env.BUCKET_NAME);
-        LogDao log = new LogDao(new Connection(env).getConnection());
-        Extract e = new Extract();
-        Transform t = new Transform();
-        Load l = new Load();
-
+            BucketAWS b = new BucketAWS(env);
+            LogDao log = new LogDao(env);
+            Extract e = new Extract(env);
+            Transform t = new Transform(env);
+            Load l = new Load(env);
 
 
         List<Arquivos> arquivos = b.listAllFiles();

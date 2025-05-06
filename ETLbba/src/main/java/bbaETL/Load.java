@@ -3,13 +3,19 @@ package bbaETL;
 import java.util.List;
 
 public class Load {
+    private Env env;
+    private LogDao log;
+    public Load(Env env) {
+        this.env = env;
+        log = new LogDao(env);
+    }
     public void carregarDados(List<DadoTratado> dadosAcarregar){
-        LogDao log = new LogDao(new Connection().getConnection());
-        ContinenteDao continente = new ContinenteDao();
-        UfDao uf = new UfDao();
-        ViaDao via = new ViaDao();
-        PaisDao pais = new PaisDao();
-        BaseDadosDao baseDados = new BaseDadosDao();
+
+        ContinenteDao continente = new ContinenteDao(env);
+        UfDao uf = new UfDao(env);
+        ViaDao via = new ViaDao(env);
+        PaisDao pais = new PaisDao(env);
+        BaseDadosDao baseDados = new BaseDadosDao(env);
         log.insertLog("INFO", "Iniciando inserção dos dados no banco de dados");
         try {
             for (DadoTratado linhaDadoAtual : dadosAcarregar) {

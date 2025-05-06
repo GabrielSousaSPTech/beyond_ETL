@@ -9,10 +9,10 @@ import java.sql.PreparedStatement;
 
 public class ViaDao {
     private final JdbcTemplate jdbcTemplate;
-    LogDao log = new LogDao(new Connection().getConnection());
-
-    public ViaDao() {
-        this.jdbcTemplate = new Connection().getConnection();
+    private LogDao log;
+    public ViaDao(Env env) {
+        this.jdbcTemplate = new Connection(env).getConnection();
+        log = new LogDao(env);
     }
 
     public Integer insertVia(String tipo){

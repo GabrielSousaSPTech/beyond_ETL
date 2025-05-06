@@ -7,10 +7,10 @@ import java.time.LocalDate;
 
 public class BaseDadosDao {
     private final JdbcTemplate jdbcTemplate;
-    LogDao log = new LogDao(new Connection().getConnection());
-
-    public BaseDadosDao() {
-        this.jdbcTemplate = new Connection().getConnection();
+    private LogDao log;
+    public BaseDadosDao(Env env) {
+        this.jdbcTemplate = new Connection(env).getConnection();
+        log = new LogDao(env);
     }
 
     public void insertBaseDados(LocalDate dataChegada, Integer chegadas, Integer fkVia, Integer fkPais, Integer fkContinente, Integer fkUf){

@@ -10,11 +10,12 @@ import java.sql.Statement;
 
 public class UfDao {
     private final JdbcTemplate jdbcTemplate;
-    LogDao log = new LogDao(new Connection().getConnection());
-
-    public UfDao() {
-        this.jdbcTemplate = new Connection().getConnection();
+    private LogDao log;
+    public UfDao(Env env) {
+        this.jdbcTemplate = new Connection(env).getConnection();
+        log = new LogDao(env);
     }
+
 
     public Integer insertUf(String uf){
         if(!uf.isBlank()){

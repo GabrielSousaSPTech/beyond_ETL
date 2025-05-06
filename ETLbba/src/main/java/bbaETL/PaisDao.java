@@ -10,10 +10,12 @@ import java.sql.Statement;
 
 public class PaisDao {
     private final JdbcTemplate jdbcTemplate;
-    LogDao log = new LogDao(new Connection().getConnection());
-    public PaisDao() {
-        this.jdbcTemplate = new Connection().getConnection();
+    private LogDao log;
+    public PaisDao(Env env) {
+        this.jdbcTemplate = new Connection(env).getConnection();
+        log = new LogDao(env);
     }
+
 
     public Integer insertPais(String nome, Integer fkContinente){
         if(!nome.isBlank()){

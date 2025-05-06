@@ -11,7 +11,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Extract {
 
-    LogDao log = new LogDao(new Connection().getConnection());
+
+    private Env env;
+    private LogDao log;
+    public Extract(Env env) {
+        this.env = env;
+        log = new LogDao(env);
+    }
 
     public List<ChegadaTuristas> extrairChegada(List<Arquivos> nomeArquivo) {
         try {
@@ -62,7 +68,7 @@ public class Extract {
 
                 log.insertLog("INFO", "Leitura do arquivo: " + arquivoAtual.getNome() + " finalizada");
 
-                BucketAWS b = new BucketAWS("bucketgabrielsousasptech");
+                BucketAWS b = new BucketAWS(env);
                 b.moveFileToProcessed(arquivoAtual.getNome());
                 log.insertLog("INFO", "Arquivo movido para processados: " + arquivoAtual.getNome());
             }

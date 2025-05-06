@@ -16,19 +16,18 @@ public class BucketAWS {
     private String bucketName;
     private Region bucketRegion;
     private S3Client client;
-    LogDao log = new LogDao(new Connection().getConnection());
+    private LogDao log;
 
+    public BucketAWS(Env env) {
 
-    public BucketAWS(String bucketName) {
-        this.bucketName = bucketName;
+        this.bucketName = env.BUCKET_NAME;
         this.bucketRegion = Region.US_EAST_1;
         this.client = S3Client.builder()
                 .region(bucketRegion)
                 .credentialsProvider(ProfileCredentialsProvider.create())
                 .build();
+        log = new LogDao(env);
     }
-
-
 
 
 

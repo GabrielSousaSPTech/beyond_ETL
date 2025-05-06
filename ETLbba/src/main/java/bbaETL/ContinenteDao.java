@@ -11,10 +11,12 @@ import java.sql.Statement;
 public class ContinenteDao {
 
     private final JdbcTemplate jdbcTemplate;
-    LogDao log = new LogDao(new Connection().getConnection());
-    public ContinenteDao() {
-        this.jdbcTemplate = new Connection().getConnection();
+    private LogDao log;
+    public ContinenteDao(Env env) {
+        this.jdbcTemplate = new Connection(env).getConnection();
+        log = new LogDao(env);
     }
+
 
     public Integer insertContinente(String nome){
         if(!nome.isBlank()){
