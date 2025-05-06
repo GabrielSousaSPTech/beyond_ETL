@@ -62,11 +62,11 @@ public class BucketAWS {
 
                     log.insertLog("INFO", "Arquivo encontrado: "+nomeArquivo);
 
+
                     GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                             .bucket(bucketName)
                             .key(object.key())
                             .build();
-
                     InputStream inputStream = client.getObject(getObjectRequest);
                     listaDeArquivos.add(new Arquivos(object.key(), inputStream));
                 }

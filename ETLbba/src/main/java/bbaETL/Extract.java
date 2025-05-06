@@ -20,6 +20,7 @@ public class Extract {
     }
 
     public List<ChegadaTuristas> extrairChegada(List<Arquivos> nomeArquivo) {
+
         try {
             List<ChegadaTuristas> dadosExtraidos = new ArrayList<>();
             for (Arquivos arquivoAtual : nomeArquivo) {
