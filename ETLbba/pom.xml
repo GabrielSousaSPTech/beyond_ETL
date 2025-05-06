@@ -95,7 +95,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>bba.log.Main</mainClass>
+                            <mainClass>bbaETL.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
