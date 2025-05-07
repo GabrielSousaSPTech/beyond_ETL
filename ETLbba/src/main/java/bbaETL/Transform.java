@@ -49,8 +49,6 @@ public class Transform {
                             linhaAtual.getMes().equals(linhaAtualUnificada.getMes()) &&
                             linhaAtual.getCodMes().equals(linhaAtualUnificada.getCodMes())){
                         Integer chegadaUnificada = linhaAtualUnificada.getChegadas() + linhaAtual.getChegadas();
-//                        log.insertLog("DEBUG", "Registro duplicado encontrado. Unindo chegadas de " +
-//                                linhaAtualUnificada.getChegadas() + " com " + linhaAtual.getChegadas() + ". Total: " + chegadaUnificada);
 
                         ChegadaTuristas dadoNovo = linhaAtualUnificada;
                         dadoNovo.setChegadas(chegadaUnificada);
