@@ -13,19 +13,19 @@ public class Transform {
     }
 
     public static Integer formatarMes(String mes){
-        return switch (mes) {
-            case "Janeiro" -> 1;
-            case "Fevereiro" -> 2;
-            case "Março" -> 3;
-            case "Abril" -> 4;
-            case "Maio" -> 5;
-            case "Junho" -> 6;
-            case "Julho" -> 7;
-            case "Agosto" -> 8;
-            case "Setembro" -> 9;
-            case "Outubro" -> 10;
-            case "Novembro" -> 11;
-            case "Dezembro" -> 12;
+        return switch (mes.toLowerCase()) {
+            case "janeiro" -> 1;
+            case "fevereiro" -> 2;
+            case "março", "marco" -> 3;
+            case "abril" -> 4;
+            case "maio" -> 5;
+            case "junho" -> 6;
+            case "julho" -> 7;
+            case "agosto" -> 8;
+            case "setembro" -> 9;
+            case "outubro" -> 10;
+            case "novembro" -> 11;
+            case "dezembro" -> 12;
             default -> 0;
         };
     }
@@ -73,7 +73,14 @@ public class Transform {
         List<DadoTratado> dadosTratados = new ArrayList<>();
         List<ChegadaTuristas> dadoUnificado = unificarChegada(dadosOriginais);
         for (ChegadaTuristas dadosOriginai : dadoUnificado) {
-            LocalDate data = LocalDate.of(dadosOriginai.getAno(), formatarMes(dadosOriginai.getMes()), 1);
+            int mesFormatado = formatarMes(dadosOriginai.getMes());
+
+            if (mesFormatado == 0) {
+                log.insertLog("WARN", "Mês inválido encontrado: " + dadosOriginai.getMes() + " - linha ignorada.");
+                continue; // pula essa linha
+            }
+
+            LocalDate data = LocalDate.of(dadosOriginai.getAno(), mesFormatado, 1);
             String ufFormatado = dadosOriginai.getUf().equals("Outras Unidades da Federação")? "Desconhecido": dadosOriginai.getUf();
             DadoTratado d = new DadoTratado(dadosOriginai.getContinente(), dadosOriginai.getPais(), ufFormatado, dadosOriginai.getVia(), data, dadosOriginai.getChegadas());
 
