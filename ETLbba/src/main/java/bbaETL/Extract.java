@@ -44,7 +44,7 @@ public class Extract {
                     }
 
                     if (arquivoAtual.getNome().endsWith("xlsx")) {
-                        if((int) linha.getCell(11).getNumericCellValue() != 0){
+                        if(linha.getCell(11) != null &&(int) linha.getCell(11).getNumericCellValue() != 0){
                             ChegadaTuristas dadoTurista = new ChegadaTuristas();
                             dadoTurista.setContinente(linha.getCell(0).getStringCellValue());
                             dadoTurista.setCodContinente((int) linha.getCell(1).getNumericCellValue());
