@@ -39,6 +39,8 @@ public class Load {
             }
 
             log.insertLog("INFO", "Dados inseridos com sucesso! Linhas inseridas: " + dadosAcarregar.size());
+            beyondSlack slack = new beyondSlack(env.TOKEN_SLACK);
+            slack.enviarMensagem("C08SPL9KM3L", "Olá nicolly e fillipe");
 
         }catch (Exception e){
             log.insertLog("ERROR", String.valueOf(e));

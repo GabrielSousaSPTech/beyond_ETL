@@ -9,7 +9,9 @@ public class Env {
     public final String BD_USER;
     public final String BD_PASSWORD;
     public final String BUCKET_NAME;
+    public final String TOKEN_SLACK;
     public final HashMap<String,String> hashMapAllData;
+
 
 
     private Env(HashMap<String, String> envs) {
@@ -19,7 +21,9 @@ public class Env {
         this.BD_USER = envs.get("BD_USER");
         this.BD_PASSWORD = envs.get("BD_PASSWORD");
         this.BUCKET_NAME = envs.get("BUCKET_NAME");
+        this.TOKEN_SLACK = envs.get("TOKEN_SLACK");
         this.hashMapAllData = envs;
+
     }
 
 
@@ -35,6 +39,7 @@ public class Env {
                 put("BD_USER", "");
                 put("BD_PASSWORD", "");
                 put("BUCKET_NAME", "");
+                put("TOKEN_SLACK", "");
             }
         };
 
