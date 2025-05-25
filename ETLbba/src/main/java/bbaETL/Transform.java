@@ -2,6 +2,7 @@ package bbaETL;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Transform {
@@ -32,8 +33,10 @@ public class Transform {
 
     public List<ChegadaTuristas> unificarChegada(List<ChegadaTuristas> dadoOriginal){
         List<ChegadaTuristas> dadosRetornar = new ArrayList<>();
+        Iterator<ChegadaTuristas> iterator = dadoOriginal.iterator();
 
-        for (ChegadaTuristas linhaAtual : dadoOriginal) {
+        while(iterator.hasNext()) {
+            ChegadaTuristas linhaAtual = iterator.next();
             Boolean dadoDuplicado = false;
             if(dadosRetornar != null && !dadosRetornar.isEmpty()){
                 for (ChegadaTuristas linhaAtualUnificada : dadosRetornar) {
@@ -61,9 +64,10 @@ public class Transform {
             if(!dadoDuplicado){
                 dadosRetornar.add(linhaAtual);
             }
+            iterator.remove();
 
         }
-
+        System.gc();
         return dadosRetornar;
     }
 
@@ -72,7 +76,9 @@ public class Transform {
 
         List<DadoTratado> dadosTratados = new ArrayList<>();
         List<ChegadaTuristas> dadoUnificado = unificarChegada(dadosOriginais);
-        for (ChegadaTuristas dadosOriginai : dadoUnificado) {
+        Iterator <ChegadaTuristas> iterator = dadoUnificado.iterator();
+        while(iterator.hasNext()) {
+            ChegadaTuristas dadosOriginai = iterator.next();
             int mesFormatado = formatarMes(dadosOriginai.getMes());
 
             if (mesFormatado == 0) {
@@ -85,6 +91,7 @@ public class Transform {
             DadoTratado d = new DadoTratado(dadosOriginai.getContinente(), dadosOriginai.getPais(), ufFormatado, dadosOriginai.getVia(), data, dadosOriginai.getChegadas());
 
             dadosTratados.add(d);
+            iterator.remove();
         }
         log.insertLog("INFO", "Tratamento e unificação dos dados finalizada");
         return dadosTratados;

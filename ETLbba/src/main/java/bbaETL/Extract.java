@@ -2,6 +2,7 @@ package bbaETL;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -20,31 +21,23 @@ public class Extract {
     }
 
     public List<ChegadaTuristas> extrairChegada(List<Arquivos> nomeArquivo) {
-
         try {
             List<ChegadaTuristas> dadosExtraidos = new ArrayList<>();
-            for (Arquivos arquivoAtual : nomeArquivo) {
+
+            Iterator<Arquivos> iterator = nomeArquivo.iterator();
+
+            while(iterator.hasNext()) {
+                Arquivos arquivoAtual = iterator.next();
 
                 log.insertLog("INFO", "Iniciando leitura do arquivo: " + arquivoAtual.getNome());
-                Workbook workbook;
-
-                workbook = new XSSFWorkbook(arquivoAtual.getInputStream());
-
+                Workbook workbook = new XSSFWorkbook(arquivoAtual.getInputStream());
                 Sheet planilha = workbook.getSheetAt(0);
 
                 for (Row linha : planilha) {
-
-                    if (linha.getRowNum() == 0) {
-
-                        for (int i = 0; i < linha.getLastCellNum(); i++) {
-                            String coluna = linha.getCell(i) != null ? linha.getCell(i).getStringCellValue() : "(vazio)";
-
-                        }
-                        continue;
-                    }
+                    if (linha.getRowNum() == 0) continue;
 
                     if (arquivoAtual.getNome().endsWith("xlsx")) {
-                        if(linha.getCell(11) != null &&(int) linha.getCell(11).getNumericCellValue() != 0){
+                        if (linha.getCell(11) != null && (int) linha.getCell(11).getNumericCellValue() != 0) {
                             ChegadaTuristas dadoTurista = new ChegadaTuristas();
                             dadoTurista.setContinente(linha.getCell(0).getStringCellValue());
                             dadoTurista.setCodContinente((int) linha.getCell(1).getNumericCellValue());
@@ -72,13 +65,16 @@ public class Extract {
                 BucketAWS b = new BucketAWS(env);
                 b.moveFileToProcessed(arquivoAtual.getNome());
                 log.insertLog("INFO", "Arquivo movido para processados: " + arquivoAtual.getNome());
-            }
-            return dadosExtraidos;
 
+                iterator.remove();
+            }
+
+            return dadosExtraidos;
         } catch (IOException e) {
             log.insertLog("ERRO", "Erro ao extrair dados dos arquivos: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
+
 
 }
