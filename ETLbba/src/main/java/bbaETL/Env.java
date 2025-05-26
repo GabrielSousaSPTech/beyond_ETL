@@ -14,7 +14,7 @@ public class Env {
 
 
 
-    private Env(HashMap<String, String> envs) {
+    Env() {
         this.BD_HOST = envs.get("BD_HOST");
         this.BD_DATABASE = envs.get("BD_DATABASE");
         this.BD_PORT = envs.get("BD_PORT");
@@ -47,7 +47,7 @@ public class Env {
             validedInputs.put(key, validateUntilNotNull(scanner, key));
         }
 
-        return new Env(validedInputs);
+        return new Env();
     }
 
     private static String validateUntilNotNull(Scanner scanner, String msg){

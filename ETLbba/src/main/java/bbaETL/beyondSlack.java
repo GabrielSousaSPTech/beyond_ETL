@@ -7,15 +7,17 @@ import com.slack.api.methods.response.chat.ChatPostMessageResponse;
 import java.util.List;
 
 public class beyondSlack {
-
     private MethodsClient metodos;
+    private Env env = new Env();
+    private beyondSlackDao dao = new beyondSlackDao(env);
+    private List<String> canais = dao.listarTodosCanais();
 
     public beyondSlack(String token) {
         Slack slack = Slack.getInstance();
         this.metodos = slack.methods(token);
     }
 
-    public void enviarParaVariosCanais(List<String> canais, String mensagem) {
+    public void enviarParaVariosCanais(String mensagem) {
         for (String canal : canais) {
             enviarMensagem(canal, mensagem);
         }
@@ -33,9 +35,9 @@ public class beyondSlack {
             ChatPostMessageResponse response = metodos.chatPostMessage(request);
 
             if (response.isOk()) {
-                System.out.println("✅ Mensagem enviada para o canal: " + canal);
+                System.out.println("Mensagem enviada para o canal: " + canal);
             } else {
-                System.out.println("❌ Erro no canal " + canal + ": " + response.getError());
+                System.out.println("Erro no canal " + canal + ": " + response.getError());
             }
 
         } catch (Exception e) {
