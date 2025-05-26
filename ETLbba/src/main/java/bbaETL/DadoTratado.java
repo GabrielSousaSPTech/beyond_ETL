@@ -1,6 +1,7 @@
 package bbaETL;
 
 import java.time.LocalDate;
+import java.sql.Date;
 
 
 public class DadoTratado {
@@ -8,13 +9,13 @@ public class DadoTratado {
     private String pais;
     private String uf;
     private String via;
-    private LocalDate data;
+    private Date data;
     private Integer chegadas;
 
     public DadoTratado() {
     }
 
-    public DadoTratado(String continente, String pais, String uf, String via, LocalDate data, Integer chegadas) {
+    public DadoTratado(String continente, String pais, String uf, String via, Date data, Integer chegadas) {
         this.continente = continente;
         this.pais = pais;
         this.uf = uf;
@@ -55,11 +56,11 @@ public class DadoTratado {
         this.via = via;
     }
 
-    public LocalDate getData() {
+    public Date getData() {
         return data;
     }
 
-    public void setData(LocalDate data) {
+    public void setData(Date data) {
         this.data = data;
     }
 

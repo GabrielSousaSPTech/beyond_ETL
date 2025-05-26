@@ -4,53 +4,28 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.HashMap;
-import java.util.List;
-
-
 public class Connection {
 
     private final DataSource dataSource;
 
-    public Connection() {
+    // Construtor com configurações dinâmicas (vindo do .env ou similar)
+    public Connection(Env env) {
         BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:mysql://localhost:3306/beyond_db");
-        basicDataSource.setUsername("root");
-        basicDataSource.setPassword("393741Gs*");
+        basicDataSource.setUrl("jdbc:mysql://" + env.BD_HOST + ":" + env.BD_PORT + "/" + env.BD_DATABASE);
+        basicDataSource.setUsername(env.BD_USER);
+        basicDataSource.setPassword(env.BD_PASSWORD);
         basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
         this.dataSource = basicDataSource;
     }
 
-    public Connection(Env hashMap) {
-        BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:mysql://"+hashMap.BD_HOST+":"+hashMap.BD_PORT+"/"+hashMap.BD_DATABASE);
-        basicDataSource.setUsername(hashMap.BD_USER);
-        basicDataSource.setPassword(hashMap.BD_PASSWORD);
-        basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-
-        this.dataSource = basicDataSource;
-    }
-
-    public JdbcTemplate getConnection() {
+    // Retorna JdbcTemplate para operações simples
+    public JdbcTemplate getJdbcTemplate() {
         return new JdbcTemplate(dataSource);
     }
 
-    public static void testConnection() {
-        try {
-            JdbcTemplate jdbcTemplate = new Connection().getConnection();
-            List<String> bancos = jdbcTemplate.queryForList("SHOW DATABASES", String.class);
-
-            System.out.println("✅ Conectado! Bancos disponíveis:");
-            for (String banco : bancos) {
-                System.out.println("- " + banco);
-            }
-        } catch (Exception e) {
-            System.out.println("❌ Erro na conexão: " + e.getMessage());
-        }
+    // Retorna DataSource para controle avançado (ex: transações manuais)
+    public DataSource getDataSource() {
+        return this.dataSource;
     }
-
-
 }
-
-

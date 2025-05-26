@@ -1,5 +1,6 @@
 package bbaETL;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class Load {
         Iterator<DadoTratado> iterator = dadosAcarregar.iterator();
         log.insertLog("INFO", "Iniciando inserção dos dados no banco de dados");
         try {
+            List<ObjetoInsercao> dadosInsert = new ArrayList<>();
             int linhasInseridas = 0;
             while(iterator.hasNext()){
                 DadoTratado linhaDadoAtual = iterator.next();
@@ -39,10 +41,12 @@ public class Load {
                 if (idPais == null) {
                     idPais = pais.insertPais(linhaDadoAtual.getPais(), idContinente);
                 }
-                baseDados.insertBaseDados(linhaDadoAtual.getData(), linhaDadoAtual.getChegadas(), idVia, idPais, idContinente, idUf);
+
+                dadosInsert.add(new ObjetoInsercao(linhaDadoAtual.getData(), linhaDadoAtual.getChegadas(), idVia, idPais, idContinente, idUf));
                 linhasInseridas++;
                 iterator.remove();
             }
+            baseDados.insertBaseDados(dadosInsert);
 
             log.insertLog("INFO", "Dados inseridos com sucesso! Linhas inseridas: " + linhasInseridas);
 

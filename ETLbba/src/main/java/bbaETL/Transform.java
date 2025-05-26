@@ -2,6 +2,7 @@ package bbaETL;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -87,13 +88,15 @@ public class Transform {
             }
 
             LocalDate data = LocalDate.of(dadosOriginai.getAno(), mesFormatado, 1);
+            Date dataSql = Date.valueOf(data);
             String ufFormatado = dadosOriginai.getUf().equals("Outras Unidades da Federação")? "Desconhecido": dadosOriginai.getUf();
-            DadoTratado d = new DadoTratado(dadosOriginai.getContinente(), dadosOriginai.getPais(), ufFormatado, dadosOriginai.getVia(), data, dadosOriginai.getChegadas());
+            DadoTratado d = new DadoTratado(dadosOriginai.getContinente(), dadosOriginai.getPais(), ufFormatado, dadosOriginai.getVia(), dataSql, dadosOriginai.getChegadas());
 
             dadosTratados.add(d);
             iterator.remove();
         }
         log.insertLog("INFO", "Tratamento e unificação dos dados finalizada");
+        System.gc();
         return dadosTratados;
     }
 
