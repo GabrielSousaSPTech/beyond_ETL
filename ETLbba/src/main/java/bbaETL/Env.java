@@ -9,17 +9,21 @@ public class Env {
     public final String BD_USER;
     public final String BD_PASSWORD;
     public final String BUCKET_NAME;
+    public final String TOKEN_SLACK;
     public final HashMap<String,String> hashMapAllData;
 
 
-    private Env(HashMap<String, String> envs) {
+
+    Env() {
         this.BD_HOST = envs.get("BD_HOST");
         this.BD_DATABASE = envs.get("BD_DATABASE");
         this.BD_PORT = envs.get("BD_PORT");
         this.BD_USER = envs.get("BD_USER");
         this.BD_PASSWORD = envs.get("BD_PASSWORD");
         this.BUCKET_NAME = envs.get("BUCKET_NAME");
+        this.TOKEN_SLACK = envs.get("TOKEN_SLACK");
         this.hashMapAllData = envs;
+
     }
 
 
@@ -35,6 +39,7 @@ public class Env {
                 put("BD_USER", "");
                 put("BD_PASSWORD", "");
                 put("BUCKET_NAME", "");
+                put("TOKEN_SLACK", "");
             }
         };
 
@@ -42,7 +47,7 @@ public class Env {
             validedInputs.put(key, validateUntilNotNull(scanner, key));
         }
 
-        return new Env(validedInputs);
+        return new Env();
     }
 
     private static String validateUntilNotNull(Scanner scanner, String msg){
