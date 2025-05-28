@@ -1,5 +1,6 @@
 package bbaETL;
 
+import bbaETL.Dao.Dao;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -7,12 +8,9 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.PreparedStatement;
 
-public class ViaDao {
-    private final JdbcTemplate jdbcTemplate;
-    private LogDao log;
+public class ViaDao extends Dao {
     public ViaDao(Env env) {
-        this.jdbcTemplate = new Connection(env).getConnection();
-        log = new LogDao(env);
+        super(env);
     }
 
     public Integer insertVia(String tipo){
@@ -29,7 +27,7 @@ public class ViaDao {
 
                 return keyHolder.getKey().intValue();
             }catch (Exception e){
-                log.insertLog("ERROR", String.valueOf(e));
+                logErro( String.valueOf(e));
             }
         }
         return null;
@@ -43,7 +41,7 @@ public class ViaDao {
             } catch (EmptyResultDataAccessException e) {
                 return null;
             } catch (Exception e) {
-                log.insertLog("ERROR", String.valueOf(e));
+                logErro( String.valueOf(e));
             }
         }
         return null;

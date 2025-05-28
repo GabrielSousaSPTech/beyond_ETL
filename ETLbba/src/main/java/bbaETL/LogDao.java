@@ -11,7 +11,7 @@ public class LogDao {
 
     private final JdbcTemplate jdbcTemplate;
     public LogDao(Env env) {
-        this.jdbcTemplate = new Connection(env).getConnection();
+        this.jdbcTemplate = new Connection(env).getJdbcTemplate();
     }
     String boldOn = "\033[1m";
     String boldOff = "\033[0m";
