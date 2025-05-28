@@ -3,13 +3,15 @@ package bbaETL;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class LogDao {
 
     private final JdbcTemplate jdbcTemplate;
     public LogDao(Env env) {
-        this.jdbcTemplate = new Connection(env).getConnection();
+        this.jdbcTemplate = new Connection(env).getJdbcTemplate();
     }
     String boldOn = "\033[1m";
     String boldOff = "\033[0m";
@@ -18,7 +20,9 @@ public class LogDao {
             try{
                 String comandoSQL = "INSERT INTO TB_ETL_LOG(TIPO_LOG, DESCRICAO) VALUES(?,?)";
                 jdbcTemplate.update(comandoSQL, tipo, log);
-                LocalDateTime timestamp = LocalDateTime.now();
+                ZoneId spZone = ZoneId.of("America/Sao_Paulo");
+                ZonedDateTime spDateTime = ZonedDateTime.now(spZone);
+                LocalDateTime timestamp = spDateTime.toLocalDateTime();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
                 if(tipo.equalsIgnoreCase("ERROR")){
