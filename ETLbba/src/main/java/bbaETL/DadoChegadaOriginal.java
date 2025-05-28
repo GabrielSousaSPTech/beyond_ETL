@@ -1,6 +1,6 @@
 package bbaETL;
 
-public class ChegadaTuristas {
+public class DadoChegadaOriginal {
     private String continente;
     private Integer codContinente;
     private String pais;

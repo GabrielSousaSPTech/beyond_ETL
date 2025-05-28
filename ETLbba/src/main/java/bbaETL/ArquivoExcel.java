@@ -1,14 +1,12 @@
 package bbaETL;
 
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-
 import java.io.InputStream;
 
-public class Arquivos {
+public class ArquivoExcel {
     private String nome;
     private InputStream inputStream;
 
-    public Arquivos (String nome, InputStream inputStream) {
+    public ArquivoExcel(String nome, InputStream inputStream) {
         this.nome = nome;
         this.inputStream = inputStream;
     }

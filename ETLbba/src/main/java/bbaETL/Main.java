@@ -1,7 +1,6 @@
 package bbaETL;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,7 +13,7 @@ public class Main {
             Load l = new Load(env);
 
 
-        List<Arquivos> arquivos = b.listAllFiles();
+        List<ArquivoExcel> arquivos = b.listAllFiles();
 
         if (arquivos.isEmpty()) {
 

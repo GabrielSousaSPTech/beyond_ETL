@@ -1,8 +1,6 @@
 package bbaETL;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -44,7 +42,7 @@ public class BucketAWS {
         return s3Object;
     }
 
-    public List<Arquivos> listAllFiles() {
+    public List<ArquivoExcel> listAllFiles() {
         ListObjectsV2Iterable response = client.listObjectsV2Paginator(
                 ListObjectsV2Request.builder()
                         .bucket(bucketName)
@@ -52,7 +50,7 @@ public class BucketAWS {
                         .build()
         );
 
-        List<Arquivos>  listaDeArquivos = new ArrayList<>();
+        List<ArquivoExcel>  listaDeArquivos = new ArrayList<>();
 
         for (ListObjectsV2Response page : response) {
             log.insertLog("INFO", "Iniciando listagem de arquivos do bucket");
@@ -69,7 +67,7 @@ public class BucketAWS {
                             .key(object.key())
                             .build();
                     InputStream inputStream = client.getObject(getObjectRequest);
-                    listaDeArquivos.add(new Arquivos(object.key(), inputStream));
+                    listaDeArquivos.add(new ArquivoExcel(object.key(), inputStream));
                 }
             }
         }

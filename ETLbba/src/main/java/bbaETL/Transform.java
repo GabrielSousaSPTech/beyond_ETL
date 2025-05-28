@@ -32,15 +32,15 @@ public class Transform {
         };
     }
 
-    public List<ChegadaTuristas> unificarChegada(List<ChegadaTuristas> dadoOriginal){
-        List<ChegadaTuristas> dadosRetornar = new ArrayList<>();
-        Iterator<ChegadaTuristas> iterator = dadoOriginal.iterator();
+    public List<DadoChegadaOriginal> unificarChegada(List<DadoChegadaOriginal> dadoOriginal){
+        List<DadoChegadaOriginal> dadosRetornar = new ArrayList<>();
+        Iterator<DadoChegadaOriginal> iterator = dadoOriginal.iterator();
 
         while(iterator.hasNext()) {
-            ChegadaTuristas linhaAtual = iterator.next();
+            DadoChegadaOriginal linhaAtual = iterator.next();
             Boolean dadoDuplicado = false;
             if(dadosRetornar != null && !dadosRetornar.isEmpty()){
-                for (ChegadaTuristas linhaAtualUnificada : dadosRetornar) {
+                for (DadoChegadaOriginal linhaAtualUnificada : dadosRetornar) {
                     if(linhaAtual.getContinente().equals(linhaAtualUnificada.getContinente()) &&
                             linhaAtual.getCodContinente().equals(linhaAtualUnificada.getCodContinente()) &&
                             linhaAtual.getPais().equals(linhaAtualUnificada.getPais()) &&
@@ -54,7 +54,7 @@ public class Transform {
                             linhaAtual.getCodMes().equals(linhaAtualUnificada.getCodMes())){
                         Integer chegadaUnificada = linhaAtualUnificada.getChegadas() + linhaAtual.getChegadas();
 
-                        ChegadaTuristas dadoNovo = linhaAtualUnificada;
+                        DadoChegadaOriginal dadoNovo = linhaAtualUnificada;
                         dadoNovo.setChegadas(chegadaUnificada);
 
                         dadosRetornar.set(dadosRetornar.indexOf(linhaAtualUnificada), dadoNovo);
@@ -72,14 +72,14 @@ public class Transform {
         return dadosRetornar;
     }
 
-    public List<DadoTratado> tratarDados(List<ChegadaTuristas> dadosOriginais){
+    public List<DadoTratado> tratarDados(List<DadoChegadaOriginal> dadosOriginais){
         log.insertLog("INFO", "Iniciando o tratamento e unificação dos dados");
 
         List<DadoTratado> dadosTratados = new ArrayList<>();
-        List<ChegadaTuristas> dadoUnificado = unificarChegada(dadosOriginais);
-        Iterator <ChegadaTuristas> iterator = dadoUnificado.iterator();
+        List<DadoChegadaOriginal> dadoUnificado = unificarChegada(dadosOriginais);
+        Iterator <DadoChegadaOriginal> iterator = dadoUnificado.iterator();
         while(iterator.hasNext()) {
-            ChegadaTuristas dadosOriginai = iterator.next();
+            DadoChegadaOriginal dadosOriginai = iterator.next();
             int mesFormatado = formatarMes(dadosOriginai.getMes());
 
             if (mesFormatado == 0) {

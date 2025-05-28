@@ -1,20 +1,19 @@
 package bbaETL;
 
-import com.slack.api.Slack;
 import com.slack.api.methods.MethodsClient;
 import com.slack.api.methods.request.chat.ChatPostMessageRequest;
 import com.slack.api.methods.response.chat.ChatPostMessageResponse;
 import java.util.List;
 
-public class beyondSlack {
+public class Slack {
     private MethodsClient metodos;
-    private beyondSlackDao dao;
+    private SlackDao dao;
     private List<String> canais;
 
-    public beyondSlack(Env env) {
-        Slack slack = Slack.getInstance();
+    public Slack(Env env) {
+        com.slack.api.Slack slack = com.slack.api.Slack.getInstance();
         this.metodos = slack.methods(env.TOKEN_SLACK);
-        this.dao = new beyondSlackDao(env);
+        this.dao = new SlackDao(env);
         this.canais = dao.listarTodosCanais();
     }
 
@@ -44,11 +43,5 @@ public class beyondSlack {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        Env env = Env.createEnv();
-        beyondSlack canal = new beyondSlack(env);
-        canal.enviarParaVariosCanais("TESTE");
     }
 }

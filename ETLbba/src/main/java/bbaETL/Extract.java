@@ -20,14 +20,14 @@ public class Extract {
         log = new LogDao(env);
     }
 
-    public List<ChegadaTuristas> extrairChegada(List<Arquivos> nomeArquivo) {
+    public List<DadoChegadaOriginal> extrairChegada(List<ArquivoExcel> nomeArquivo) {
         try {
-            List<ChegadaTuristas> dadosExtraidos = new ArrayList<>();
+            List<DadoChegadaOriginal> dadosExtraidos = new ArrayList<>();
 
-            Iterator<Arquivos> iterator = nomeArquivo.iterator();
+            Iterator<ArquivoExcel> iterator = nomeArquivo.iterator();
 
             while(iterator.hasNext()) {
-                Arquivos arquivoAtual = iterator.next();
+                ArquivoExcel arquivoAtual = iterator.next();
 
                 log.insertLog("INFO", "Iniciando leitura do arquivo: " + arquivoAtual.getNome());
                 Workbook workbook = new XSSFWorkbook(arquivoAtual.getInputStream());
@@ -38,7 +38,7 @@ public class Extract {
 
                     if (arquivoAtual.getNome().endsWith("xlsx")) {
                         if (linha.getCell(11) != null && (int) linha.getCell(11).getNumericCellValue() != 0) {
-                            ChegadaTuristas dadoTurista = new ChegadaTuristas();
+                            DadoChegadaOriginal dadoTurista = new DadoChegadaOriginal();
                             dadoTurista.setContinente(linha.getCell(0).getStringCellValue());
                             dadoTurista.setCodContinente((int) linha.getCell(1).getNumericCellValue());
                             dadoTurista.setPais(linha.getCell(2).getStringCellValue());

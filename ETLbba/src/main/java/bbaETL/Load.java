@@ -42,11 +42,6 @@ public class Load {
                     idPais = pais.insertPais(linhaDadoAtual.getPais(), idContinente);
                 }
 
-<<<<<<< HEAD
-            log.insertLog("INFO", "Dados inseridos com sucesso! Linhas inseridas: " + dadosAcarregar.size());
-            beyondSlack slack = new beyondSlack(env);
-            slack.enviarMensagem("C08SPL9KM3L", "Olá nicolly e fillipe");
-=======
                 dadosInsert.add(new ObjetoInsercao(linhaDadoAtual.getData(), linhaDadoAtual.getChegadas(), idVia, idPais, idContinente, idUf));
                 linhasInseridas++;
                 iterator.remove();
@@ -54,7 +49,8 @@ public class Load {
             baseDados.insertBaseDados(dadosInsert);
 
             log.insertLog("INFO", "Dados inseridos com sucesso! Linhas inseridas: " + linhasInseridas);
->>>>>>> b7112101626d279d28f2ccb7454e257fd0a5398c
+            Slack slack = new Slack(env);
+            slack.enviarParaVariosCanais( "Nossa base de dados está cada vez mais rica" + linhasInseridas);
 
         }catch (Exception e){
             log.insertLog("ERROR", String.valueOf(e));
