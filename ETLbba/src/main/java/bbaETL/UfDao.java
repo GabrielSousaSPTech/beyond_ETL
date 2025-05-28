@@ -1,5 +1,6 @@
 package bbaETL;
 
+import bbaETL.Dao.Dao;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -8,14 +9,11 @@ import org.springframework.jdbc.support.KeyHolder;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
-public class UfDao {
-    private final JdbcTemplate jdbcTemplate;
-    private LogDao log;
-    public UfDao(Env env) {
-        this.jdbcTemplate = new Connection(env).getConnection();
-        log = new LogDao(env);
-    }
+public class UfDao extends Dao {
 
+    public UfDao(Env env) {
+        super(env);
+    }
 
     public Integer insertUf(String uf){
         if(!uf.isBlank()){
@@ -31,7 +29,7 @@ public class UfDao {
 
                 return keyHolder.getKey().intValue();
             }catch (Exception e){
-                log.insertLog("ERROR", String.valueOf(e));
+                logErro( String.valueOf(e));
             }
         }
         return null;
@@ -45,7 +43,7 @@ public class UfDao {
             } catch (EmptyResultDataAccessException e) {
                 return null;
             } catch (Exception e) {
-                log.insertLog("ERROR", String.valueOf(e));
+                logErro( String.valueOf(e));
             }
         }
         return null;

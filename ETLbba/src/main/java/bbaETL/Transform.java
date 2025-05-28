@@ -2,6 +2,8 @@ package bbaETL;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.sql.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class Transform {
@@ -32,8 +34,10 @@ public class Transform {
 
     public List<ChegadaTuristas> unificarChegada(List<ChegadaTuristas> dadoOriginal){
         List<ChegadaTuristas> dadosRetornar = new ArrayList<>();
+        Iterator<ChegadaTuristas> iterator = dadoOriginal.iterator();
 
-        for (ChegadaTuristas linhaAtual : dadoOriginal) {
+        while(iterator.hasNext()) {
+            ChegadaTuristas linhaAtual = iterator.next();
             Boolean dadoDuplicado = false;
             if(dadosRetornar != null && !dadosRetornar.isEmpty()){
                 for (ChegadaTuristas linhaAtualUnificada : dadosRetornar) {
@@ -61,9 +65,10 @@ public class Transform {
             if(!dadoDuplicado){
                 dadosRetornar.add(linhaAtual);
             }
+            iterator.remove();
 
         }
-
+        System.gc();
         return dadosRetornar;
     }
 
@@ -72,7 +77,9 @@ public class Transform {
 
         List<DadoTratado> dadosTratados = new ArrayList<>();
         List<ChegadaTuristas> dadoUnificado = unificarChegada(dadosOriginais);
-        for (ChegadaTuristas dadosOriginai : dadoUnificado) {
+        Iterator <ChegadaTuristas> iterator = dadoUnificado.iterator();
+        while(iterator.hasNext()) {
+            ChegadaTuristas dadosOriginai = iterator.next();
             int mesFormatado = formatarMes(dadosOriginai.getMes());
 
             if (mesFormatado == 0) {
@@ -81,12 +88,15 @@ public class Transform {
             }
 
             LocalDate data = LocalDate.of(dadosOriginai.getAno(), mesFormatado, 1);
+            Date dataSql = Date.valueOf(data);
             String ufFormatado = dadosOriginai.getUf().equals("Outras Unidades da Federação")? "Desconhecido": dadosOriginai.getUf();
-            DadoTratado d = new DadoTratado(dadosOriginai.getContinente(), dadosOriginai.getPais(), ufFormatado, dadosOriginai.getVia(), data, dadosOriginai.getChegadas());
+            DadoTratado d = new DadoTratado(dadosOriginai.getContinente(), dadosOriginai.getPais(), ufFormatado, dadosOriginai.getVia(), dataSql, dadosOriginai.getChegadas());
 
             dadosTratados.add(d);
+            iterator.remove();
         }
         log.insertLog("INFO", "Tratamento e unificação dos dados finalizada");
+        System.gc();
         return dadosTratados;
     }
 

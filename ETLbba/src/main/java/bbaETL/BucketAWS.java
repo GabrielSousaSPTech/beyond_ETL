@@ -25,7 +25,7 @@ public class BucketAWS {
         this.bucketRegion = Region.US_EAST_1;
         this.client = S3Client.builder()
                 .region(bucketRegion)
-                .credentialsProvider(ProfileCredentialsProvider.create())
+                .credentialsProvider(DefaultCredentialsProvider.create())
                 .build();
         log = new LogDao(env);
     }
