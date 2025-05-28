@@ -14,7 +14,7 @@ public class Env {
 
 
 
-    Env() {
+    private Env(HashMap<String,String> envs) {
         this.BD_HOST = envs.get("BD_HOST");
         this.BD_DATABASE = envs.get("BD_DATABASE");
         this.BD_PORT = envs.get("BD_PORT");
@@ -23,10 +23,7 @@ public class Env {
         this.BUCKET_NAME = envs.get("BUCKET_NAME");
         this.TOKEN_SLACK = envs.get("TOKEN_SLACK");
         this.hashMapAllData = envs;
-
     }
-
-
 
     public static Env createEnv(){
         System.out.println("Insira os valores de env");
@@ -47,7 +44,7 @@ public class Env {
             validedInputs.put(key, validateUntilNotNull(scanner, key));
         }
 
-        return new Env();
+        return new Env(validedInputs);
     }
 
     private static String validateUntilNotNull(Scanner scanner, String msg){

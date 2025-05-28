@@ -8,13 +8,14 @@ import java.util.List;
 
 public class beyondSlack {
     private MethodsClient metodos;
-    private Env env = new Env();
-    private beyondSlackDao dao = new beyondSlackDao(env);
-    private List<String> canais = dao.listarTodosCanais();
+    private beyondSlackDao dao;
+    private List<String> canais;
 
-    public beyondSlack(String token) {
+    public beyondSlack(Env env) {
         Slack slack = Slack.getInstance();
-        this.metodos = slack.methods(token);
+        this.metodos = slack.methods(env.TOKEN_SLACK);
+        this.dao = new beyondSlackDao(env);
+        this.canais = dao.listarTodosCanais();
     }
 
     public void enviarParaVariosCanais(String mensagem) {
@@ -43,5 +44,11 @@ public class beyondSlack {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        Env env = Env.createEnv();
+        beyondSlack canal = new beyondSlack(env);
+        canal.enviarParaVariosCanais("TESTE");
     }
 }
