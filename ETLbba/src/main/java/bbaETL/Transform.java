@@ -1,10 +1,8 @@
 package bbaETL;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.*;
 import java.sql.Date;
-import java.util.Iterator;
-import java.util.List;
 
 public class Transform {
 
@@ -32,44 +30,37 @@ public class Transform {
         };
     }
 
-    public List<DadoChegadaOriginal> unificarChegada(List<DadoChegadaOriginal> dadoOriginal){
-        List<DadoChegadaOriginal> dadosRetornar = new ArrayList<>();
-        Iterator<DadoChegadaOriginal> iterator = dadoOriginal.iterator();
+    private String gerarChaveUnificacao(DadoChegadaOriginal d) {
+        return String.join("_",
+                String.valueOf(d.getContinente()),
+                String.valueOf(d.getCodContinente()),
+                String.valueOf(d.getPais()),
+                String.valueOf(d.getCodPais()),
+                String.valueOf(d.getUf()),
+                String.valueOf(d.getCodUf()),
+                String.valueOf(d.getVia()),
+                String.valueOf(d.getCodVia()),
+                String.valueOf(d.getAno()),
+                String.valueOf(d.getMes()),
+                String.valueOf(d.getCodMes())
+        );
+    }
 
-        while(iterator.hasNext()) {
-            DadoChegadaOriginal linhaAtual = iterator.next();
-            Boolean dadoDuplicado = false;
-            if(dadosRetornar != null && !dadosRetornar.isEmpty()){
-                for (DadoChegadaOriginal linhaAtualUnificada : dadosRetornar) {
-                    if(linhaAtual.getContinente().equals(linhaAtualUnificada.getContinente()) &&
-                            linhaAtual.getCodContinente().equals(linhaAtualUnificada.getCodContinente()) &&
-                            linhaAtual.getPais().equals(linhaAtualUnificada.getPais()) &&
-                            linhaAtual.getCodPais().equals(linhaAtualUnificada.getCodPais()) &&
-                            linhaAtual.getUf().equals(linhaAtualUnificada.getUf()) &&
-                            linhaAtual.getCodUf().equals(linhaAtualUnificada.getCodUf()) &&
-                            linhaAtual.getVia().equals(linhaAtualUnificada.getVia()) &&
-                            linhaAtual.getCodVia().equals(linhaAtualUnificada.getCodVia()) &&
-                            linhaAtual.getAno().equals(linhaAtualUnificada.getAno()) &&
-                            linhaAtual.getMes().equals(linhaAtualUnificada.getMes()) &&
-                            linhaAtual.getCodMes().equals(linhaAtualUnificada.getCodMes())){
-                        Integer chegadaUnificada = linhaAtualUnificada.getChegadas() + linhaAtual.getChegadas();
+    public List<DadoChegadaOriginal> unificarChegada(List<DadoChegadaOriginal> dadoOriginal) {
+        Map<String, DadoChegadaOriginal> mapa = new HashMap<>();
 
-                        DadoChegadaOriginal dadoNovo = linhaAtualUnificada;
-                        dadoNovo.setChegadas(chegadaUnificada);
+        for (DadoChegadaOriginal dado : dadoOriginal) {
+            String chave = gerarChaveUnificacao(dado);
 
-                        dadosRetornar.set(dadosRetornar.indexOf(linhaAtualUnificada), dadoNovo);
-                        dadoDuplicado = true;
-                    }
-                }
+            if (mapa.containsKey(chave)) {
+                DadoChegadaOriginal existente = mapa.get(chave);
+                existente.setChegadas(existente.getChegadas() + dado.getChegadas());
+            } else {
+                mapa.put(chave, dado);
             }
-            if(!dadoDuplicado){
-                dadosRetornar.add(linhaAtual);
-            }
-            iterator.remove();
-
         }
-        System.gc();
-        return dadosRetornar;
+
+        return new ArrayList<>(mapa.values());
     }
 
     public List<DadoTratado> tratarDados(List<DadoChegadaOriginal> dadosOriginais){
@@ -84,13 +75,14 @@ public class Transform {
 
             if (mesFormatado == 0) {
                 log.insertLog("WARN", "Mês inválido encontrado: " + dadosOriginai.getMes() + " - linha ignorada.");
-                continue; // pula essa linha
+                continue;
             }
 
             LocalDate data = LocalDate.of(dadosOriginai.getAno(), mesFormatado, 1);
             Date dataSql = Date.valueOf(data);
             String ufFormatado = dadosOriginai.getUf().equals("Outras Unidades da Federação")? "Desconhecido": dadosOriginai.getUf();
-            DadoTratado d = new DadoTratado(dadosOriginai.getContinente(), dadosOriginai.getPais(), ufFormatado, dadosOriginai.getVia(), dataSql, dadosOriginai.getChegadas());
+            String viaFormatada = dadosOriginai.getVia().equals("Aéreo") ? "Aérea": dadosOriginai.getVia().equals("Marítimo") ? "Marítima": dadosOriginai.getVia();
+            DadoTratado d = new DadoTratado(dadosOriginai.getContinente(), dadosOriginai.getPais(), ufFormatado, viaFormatada, dataSql, dadosOriginai.getChegadas());
 
             dadosTratados.add(d);
             iterator.remove();

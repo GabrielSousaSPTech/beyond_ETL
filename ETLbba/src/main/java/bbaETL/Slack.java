@@ -20,6 +20,11 @@ public class Slack {
     public void enviarParaVariosCanais(String mensagem) {
         for (String canal : canais) {
             enviarMensagem(canal, mensagem);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
