@@ -1,8 +1,6 @@
 package bbaETL;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Load {
     private Env env;
@@ -19,6 +17,8 @@ public class Load {
         PaisDao pais = new PaisDao(env);
         BaseDadosDao baseDados = new BaseDadosDao(env);
         Iterator<DadoTratado> iterator = dadosAcarregar.iterator();
+        Set<String> anosSet = new HashSet<>();
+
         log.insertLog("INFO", "Iniciando inserção dos dados no banco de dados");
         try {
             List<ObjetoInsercao> dadosInsert = new ArrayList<>();
@@ -42,15 +42,22 @@ public class Load {
                     idPais = pais.insertPais(linhaDadoAtual.getPais(), idContinente);
                 }
 
+                anosSet.add(linhaDadoAtual.getData().toString().substring(0,4));
+
                 dadosInsert.add(new ObjetoInsercao(linhaDadoAtual.getData(), linhaDadoAtual.getChegadas(), idVia, idPais, idContinente, idUf));
                 linhasInseridas++;
                 iterator.remove();
             }
             baseDados.insertBaseDados(dadosInsert);
 
-            log.insertLog("INFO", "Dados inseridos com sucesso! Linhas inseridas: " + linhasInseridas);
+            log.insertLog("INFO",
+                        "Novos dados chegaram!  Venha conferir nossas dashboards:\n" +
+                             "•\tForam inseridas %f linhas referentes ao ano de %d.  \n" +
+                             "Beyond Analytics — Um Horizonte de Possibilidades..\n" + linhasInseridas + anosSet.stream().toList());
             Slack slack = new Slack(env);
-            slack.enviarParaVariosCanais( "Nossa base de dados está cada vez mais rica" + linhasInseridas);
+            slack.enviarParaVariosCanais(String.format("Novos dados chegaram!  Venha conferir nossas dashboards:\n" +
+                                                    "•\tForam inseridas %d linhas referentes ao ano de %s.  \n" +
+                                                    "Beyond Analytics — Um Horizonte de Possibilidades..\n", linhasInseridas, anosSet.stream().toList()));
 
         }catch (Exception e){
             log.insertLog("ERROR", String.valueOf(e));
